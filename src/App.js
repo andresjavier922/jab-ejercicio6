@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
+
 function App() {
+  const [ chiste, setChiste] = useState([]);
+  const otro= ()=> {
+    const url = 'http://api.icndb.com/jokes';
+    const peticion = fetch(url);
+    peticion
+    .then((dato)=> dato.json())
+    .then((lectura)=> lectura.value.map((chistes)=>{
+      setChiste((e)=> [...e, <div className='ch' key={chistes.id}>{chistes.id} {chistes.joke}</div>])
+    }) )
+    .catch(()=> console.log('Se produjo un error'))   
+  }
+  useEffect (()=> {
+    otro()
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {chiste}
+      
+    </>
   );
 }
 
